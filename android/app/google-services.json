@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "930712252135",
+    "project_id": "boothflutter-50442",
+    "storage_bucket": "boothflutter-50442.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930712252135:android:37cd9e3f42db2963e03c42",
+        "android_client_info": {
+          "package_name": "com.example.mybooth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930712252135-mg7gktnrddqkrrjpl78p26912prq264e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mybooth",
+            "certificate_hash": "0420afcd0dbd2be15a4e3522db411fb697f5914b"
+          }
+        },
+        {
+          "client_id": "930712252135-g229u8bqi7kirbrvpth39hb5amsmmjee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv4rj0i3q4DeikRXTfN1beGBolg-cwLrE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930712252135-g229u8bqi7kirbrvpth39hb5amsmmjee.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "930712252135-8o9hnpsu35b1ra2u5t5up8nkk3aadq1m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.boothProject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

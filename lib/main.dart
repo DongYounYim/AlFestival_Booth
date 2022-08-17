@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'login.dart';
+import 'Init.dart';
 import 'home.dart';
 
 void main() async {
@@ -30,7 +30,7 @@ class BoothApp extends StatelessWidget {
           if (user.hasData) {
             return const Home();
           } else {
-            return const Login();
+            return const Init();
           }
         },
       ),

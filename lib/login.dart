@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'home.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -11,25 +9,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  // firebase google login
-  Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-  }
-
   // firebase email login
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController(); //입력되는 값을 제어
@@ -151,12 +130,24 @@ class _LoginState extends State<Login> {
                   const SizedBox(height: 10.0),
                   _passwordInputWidget(),
                   const SizedBox(height: 10.0),
-                  SizedBox(
-                    width: 200,
-                    child: ElevatedButton(
-                      onPressed: _login, 
-                      child: const Text('Login', style: TextStyle(fontSize: 22),)
-                    )
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 220,
+                        child: ElevatedButton(
+                          onPressed: _login, 
+                          child: const Text('Login', style: TextStyle(fontSize: 22),)
+                        )
+                      ),
+                      SizedBox(
+                        width: 220,
+                        child: ElevatedButton(
+                          onPressed: () => Navigator.pop(context), 
+                          child: const Text('초기화면으로', style: TextStyle(fontSize: 22),)
+                        )
+                      )
+                    ],
                   )
                 ]
               ),

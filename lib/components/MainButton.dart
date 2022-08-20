@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../init.dart';
+import '../qrscan.dart';
 
 class MainButton extends StatefulWidget {
-  const MainButton({Key? key, required this.id, required this.label, required this.isClear})
+  const MainButton({Key? key, required this.id, required this.label, required this.isClear, required this.setResultQR})
       : super(key: key);
   final String id;
   final String label;
   final bool isClear;
+  final Function setResultQR;
 
   @override
   State<MainButton> createState() => _MainButtonState();
@@ -15,6 +16,7 @@ class MainButton extends StatefulWidget {
 
 class _MainButtonState extends State<MainButton> {
   bool _active = false;
+  String? _output = 'Empty QR Scan';
 
   logout() {
     FirebaseAuth.instance.signOut();
@@ -53,6 +55,14 @@ class _MainButtonState extends State<MainButton> {
     }
   }
 
+  Future _scan(context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ScanQR()),
+    );
+    widget.setResultQR(result);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -61,6 +71,7 @@ class _MainButtonState extends State<MainButton> {
         _setActive(),
         if (widget.id == 'logout') {logout()}
         else if (widget.id == 'get') {_get()}
+        else if (widget.id == 'qrcode') {_scan(context)}
       },
       child: Container(
         alignment: Alignment.center,

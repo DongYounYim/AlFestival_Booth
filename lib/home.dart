@@ -40,6 +40,17 @@ class _HomeState extends State<Home> {
   var eachClear = Map();
   // clear 여부
   var isClear;
+  // qr코드 인식 결과
+  var resultQR;
+  void setResultQR(res) async {
+    setState(() {
+      resultQR = res;
+      isLoading = true;
+    });
+    print('테스티' + resultQR);
+    // db 업데이트
+    // _getData();
+  }
   bool isLoading = true;
   Future _getData () async {
     // 부스에 관련 데이터 가져오기
@@ -68,114 +79,115 @@ class _HomeState extends State<Home> {
     } else {
       return SafeArea(
         child: Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-          image: AssetImage("assets/images/background1.jpg"),
-          fit: BoxFit.cover,
-        )),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Booth',
-                      style:
-                          TextStyle(fontSize: 80, fontWeight: FontWeight.w700),
-                    ),
-                    const Text('Stamp',
-                        style: TextStyle(
-                            fontSize: 80, fontWeight: FontWeight.w700)),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    const Text(
-                      '남은시간 : 00:00:00',
-                      style: TextStyle(fontSize: 30),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    TextButton(
-                      onPressed: () => _getData(),
-                      child: const Text(
-                        '[도장 모으는 방법]',
-                        style: TextStyle(fontSize: 30),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(30),
-                      child: GridView.builder(
-                        shrinkWrap: true,
-                        itemCount: 4,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 3,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
+          resizeToAvoidBottomInset: false,  //overflow에러 임시해결
+          body: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage("assets/images/background1.jpg"),
+              fit: BoxFit.cover,
+            )),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Booth',
+                          style:
+                              TextStyle(fontSize: 80, fontWeight: FontWeight.w700),
                         ),
-                        itemBuilder: (BuildContext context, int index) {
-                          // Todo mainbutton에 Clear 여부넘겨주기
-                          return MainButton(
-                              id: BtnItem[index][0], label: BtnItem[index][1], isClear: isClear);
-                        },
-                      ),
-                    ),
-                  ]),
-            ),
-            Expanded(
-                flex: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GridView.count(
-                      shrinkWrap: true,
-                      crossAxisCount: 3,
-                      children: initdata.map((value) => Column(
-                        children: [
-                          Container(
-                            height: 150,
-                            width: 200,
-                            color: Color(0xffFEE57E),
-                            // value['booth_name'] == user의 progress내의 bool값이 true 이면 도장
-                            child: eachClear[value['booth_name']] 
-                              ? const Image(
-                                image: AssetImage("assets/images/stampFalse.png")
-                              )
-                              : const SizedBox() 
+                        const Text('Stamp',
+                            style: TextStyle(
+                                fontSize: 80, fontWeight: FontWeight.w700)),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        const Text(
+                          '남은시간 : 00:00:00',
+                          style: TextStyle(fontSize: 30),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        TextButton(
+                          onPressed: () => _getData(),
+                          child: const Text(
+                            '[도장 모으는 방법]',
+                            style: TextStyle(fontSize: 30),
                           ),
-                          const SizedBox(height: 10),
-                          Container(
-                            width: 200,
-                            color: Color(0xff515151),
-                            child: Text(
-                              value['title'],
-                              style: const TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white
-                              ),
-                              textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(30),
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            itemCount: 4,
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 3,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
                             ),
-                          )
-                        ],
-                      )).toList()  
-                    )
-                  ],
-                ))
-          ],
-        ),
-      ),
-    ));
+                            itemBuilder: (BuildContext context, int index) {
+                              // Todo mainbutton에 Clear 여부넘겨주기
+                              return MainButton(
+                                  id: BtnItem[index][0], label: BtnItem[index][1], isClear: isClear, setResultQR: setResultQR);
+                            },
+                          ),
+                        ),
+                      ]),
+                ),
+                Expanded(
+                    flex: 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GridView.count(
+                          shrinkWrap: true,
+                          crossAxisCount: 3,
+                          children: initdata.map((value) => Column(
+                            children: [
+                              Container(
+                                height: 150,
+                                width: 200,
+                                color: Color(0xffFEE57E),
+                                // value['booth_name'] == user의 progress내의 bool값이 true 이면 도장
+                                child: eachClear[value['booth_name']] 
+                                  ? const Image(
+                                    image: AssetImage("assets/images/stampFalse.png")
+                                  )
+                                  : const SizedBox() 
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                width: 200,
+                                color: Color(0xff515151),
+                                child: Text(
+                                  value['title'],
+                                  style: const TextStyle(
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                            ],
+                          )).toList()  
+                        )
+                      ],
+                    ))
+              ],
+            ),
+          ),
+        )
+      );
     }
-    
   }
 }

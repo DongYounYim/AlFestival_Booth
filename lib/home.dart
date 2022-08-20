@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'components/MainButton.dart';
 
@@ -16,66 +19,9 @@ final BtnItem = [
     '로그아웃',
   ],
   [
-    'quit',
-    '종료하기',
+    'get',
+    '상품수령',
   ]
-];
-
-final dummyData = [
-  {
-    'content_id': '1',
-    'content_img': 'dummy',
-    'title': 'aa',
-    'complete': true,
-  },
-  {
-    'content_id': '2',
-    'content_img': 'dummy',
-    'title': 'aa',
-    'complete': false,
-  },
-  {
-    'content_id': '3',
-    'content_img': 'dummy',
-    'title': 'aa',
-    'complete': false,
-  },
-  {
-    'content_id': '4',
-    'content_img': 'dummy',
-    'title': 'aa',
-    'complete': false,
-  },
-  {
-    'content_id': '5',
-    'content_img': 'dummy',
-    'title': 'aa',
-    'complete': false,
-  },
-  {
-    'content_id': '6',
-    'content_img': 'dummy',
-    'title': 'aa',
-    'complete': false,
-  },
-  {
-    'content_id': '7',
-    'content_img': 'dummy',
-    'title': 'aa',
-    'complete': false,
-  },
-  {
-    'content_id': '8',
-    'content_img': 'dummy',
-    'title': 'aa',
-    'complete': false,
-  },
-  {
-    'content_id': '9',
-    'content_img': 'dummy',
-    'title': 'aa',
-    'complete': false,
-  }
 ];
 
 class Home extends StatefulWidget {
@@ -86,9 +32,41 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final db = FirebaseFirestore.instance;
+  // 부스 정보 데이터
+  List initdata = [];
+  // 부스 성공 여부
+  var eachClear = Map();
+  // clear 여부
+  var isClear;
+  bool isLoading = true;
+  Future _getData () async {
+    // 부스에 관련 데이터 가져오기
+    await db.collection('booth').get()
+    .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) { 
+        initdata.add(doc.data());
+      });
+    });
+    // todo user 데이터 가져오기
+    await db.collection('users').doc(uid).get()
+    .then((DocumentSnapshot doc) {
+      var data = doc.data() as Map;
+      eachClear = data['progress'] as Map;
+      isClear = data['clear'];
+    });
+    setState(() {
+      isLoading = false;
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    if (isLoading) {
+      _getData();
+      return CircularProgressIndicator();
+    } else {
+      return SafeArea(
         child: Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -123,9 +101,12 @@ class _HomeState extends State<Home> {
                     const SizedBox(
                       height: 30,
                     ),
-                    const Text(
-                      '[도장 모으는 방법]',
-                      style: TextStyle(fontSize: 30),
+                    TextButton(
+                      onPressed: () => _getData(),
+                      child: const Text(
+                        '[도장 모으는 방법]',
+                        style: TextStyle(fontSize: 30),
+                      ),
                     ),
                     const SizedBox(
                       height: 30,
@@ -142,8 +123,9 @@ class _HomeState extends State<Home> {
                           crossAxisSpacing: 10,
                         ),
                         itemBuilder: (BuildContext context, int index) {
+                          // Todo mainbutton에 Clear 여부넘겨주기
                           return MainButton(
-                              id: BtnItem[index][0], label: BtnItem[index][1]);
+                              id: BtnItem[index][0], label: BtnItem[index][1], isClear: isClear);
                         },
                       ),
                     ),
@@ -154,46 +136,46 @@ class _HomeState extends State<Home> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GridView.builder(
-                        shrinkWrap: true,
-                        itemCount: 9,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          childAspectRatio: 1.3,
-                          mainAxisSpacing: 15,
-                          crossAxisSpacing: 5,
-                        ),
-                        itemBuilder: (BuildContext context, int index) {
-                          return Column(
-                            children: [
-                              Container(
-                                height: 150,
-                                width: 200,
-                                color: Color(0xffFEE57E),
-                                child: Image(
-                                    image: AssetImage(
-                                        "assets/images/stampFalse.png")),
+                    GridView.count(
+                      shrinkWrap: true,
+                      crossAxisCount: 3,
+                      children: initdata.map((value) => Column(
+                        children: [
+                          Container(
+                            height: 150,
+                            width: 200,
+                            color: Color(0xffFEE57E),
+                            // value['booth_name'] == user의 progress내의 bool값이 true 이면 도장
+                            child: eachClear[value['booth_name']] 
+                              ? const Image(
+                                image: AssetImage("assets/images/stampFalse.png")
+                              )
+                              : const SizedBox() 
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            width: 200,
+                            color: Color(0xff515151),
+                            child: Text(
+                              value['title'],
+                              style: const TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white
                               ),
-                              const SizedBox(height: 10),
-                              Container(
-                                  width: 200,
-                                  color: Color(0xff515151),
-                                  child: const Text(
-                                    "title",
-                                    style: TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.white),
-                                    textAlign: TextAlign.center,
-                                  ))
-                            ],
-                          );
-                        })
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        ],
+                      )).toList()  
+                    )
                   ],
                 ))
           ],
         ),
       ),
     ));
+    }
+    
   }
 }

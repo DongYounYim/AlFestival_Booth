@@ -17,8 +17,8 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   // school List
-  List<String> schoolList = ['월봉고등학교', '청수고등학교', '천안여자고등학교'];
-  String selectedSchool = '월봉고등학교';
+  List<String> schoolList = ['천안월봉고등학교', '천안청수고등학교', '천안여자고등학교', '천안오성고등학교', '논산대건고등학교'];
+  String selectedSchool = '천안월봉고등학교';
   // uid
   String userid = '';
   // firestore
@@ -106,7 +106,20 @@ class _SignUpState extends State<SignUp> {
       'uid': userid,
       'name': _nameController.text,
       'email': _emailController.text,
-      'school': selectedSchool
+      'school': selectedSchool,
+      'clear': false,
+      'getItem': false,
+      'progress': {
+        'booth1': false,
+        'booth2': false,
+        'booth3': false,
+        'booth4': false,
+        'booth5': false,
+        'booth6': false,
+        'booth7': false,
+        'booth8': false,
+        'booth9': false
+      }
     }).then((value) => print('정보 입력 성공'))
     .catchError((error) => print('Failed to add user: $error'));
     try {

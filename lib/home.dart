@@ -47,9 +47,15 @@ class _HomeState extends State<Home> {
       resultQR = res;
       isLoading = true;
     });
-    print('테스티' + resultQR);
+    print('결과 : ' + resultQR);
     // db 업데이트
-    // _getData();
+    await db.collection('users').doc(uid)
+    .update({'progress': {
+      resultQR: true
+    }})
+    .then((value) => print('User Update'))
+    .catchError((error) => print('Update Failed'));
+    _getData();
   }
   bool isLoading = true;
   Future _getData () async {
@@ -60,7 +66,7 @@ class _HomeState extends State<Home> {
         initdata.add(doc.data());
       });
     });
-    // todo user 데이터 가져오기
+    // user 데이터 가져오기
     await db.collection('users').doc(uid).get()
     .then((DocumentSnapshot doc) {
       var data = doc.data() as Map;
@@ -70,6 +76,36 @@ class _HomeState extends State<Home> {
     setState(() {
       isLoading = false;
     });
+  }
+  openDetail(name, subject, detail) async {
+    // 맵 Dialog open
+    return await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 400,
+                child: Image(image: AssetImage('assets/images/${name}.jpg')),
+              ),
+              SizedBox(height: 20),
+              Text(subject, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
+              SizedBox(height: 20),
+              Text(detail, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('도장 받으러 가기'),
+            )
+          ],
+        );
+      }
+    );
   }
   @override
   Widget build(BuildContext context) {
@@ -144,14 +180,18 @@ class _HomeState extends State<Home> {
                       ]),
                 ),
                 Expanded(
-                    flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GridView.count(
-                          shrinkWrap: true,
-                          crossAxisCount: 3,
-                          children: initdata.map((value) => Column(
+                  flex: 2,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GridView.count(
+                        shrinkWrap: true,
+                        crossAxisCount: 3,
+                        children: initdata.map((value) => 
+                        InkWell(
+                          // todo 부스 디테일로 이동 
+                          onTap: () => openDetail(value['booth_name'], value['subject'], value['description']),
+                          child: Column(
                             children: [
                               Container(
                                 height: 150,
@@ -160,9 +200,11 @@ class _HomeState extends State<Home> {
                                 // value['booth_name'] == user의 progress내의 bool값이 true 이면 도장
                                 child: eachClear[value['booth_name']] 
                                   ? const Image(
-                                    image: AssetImage("assets/images/stampFalse.png")
+                                    image: AssetImage("assets/images/stamp/stampComplete.png")
                                   )
-                                  : const SizedBox() 
+                                  : Image(
+                                    image: AssetImage("assets/images/stamp/${value['stamp']}.png"),
+                                  )
                               ),
                               const SizedBox(height: 10),
                               Container(
@@ -171,7 +213,7 @@ class _HomeState extends State<Home> {
                                 child: Text(
                                   value['title'],
                                   style: const TextStyle(
-                                    fontSize: 28,
+                                    fontSize: 22,
                                     fontWeight: FontWeight.w400,
                                     color: Colors.white
                                   ),
@@ -179,10 +221,11 @@ class _HomeState extends State<Home> {
                                 ),
                               )
                             ],
-                          )).toList()  
-                        )
-                      ],
-                    ))
+                          ),
+                        )).toList()  
+                      )
+                    ],
+                  ))
               ],
             ),
           ),

@@ -40,7 +40,7 @@ class _MainButtonState extends State<MainButton> {
           return AlertDialog(
             backgroundColor: Colors.white,
             title: const Text(
-              '아직 모든 부스를 완료하지 않았습니다. \n 모든 부스를 완료한 후에 이용해 주세요.',
+              '아직 모든 부스를 완료하지 않았습니다. \n모든 부스를 완료한 후에 이용해 주세요.',
               style: TextStyle(color: Colors.black),
             ),
             actions: [
@@ -63,6 +63,32 @@ class _MainButtonState extends State<MainButton> {
     widget.setResultQR(result);
   }
 
+  openMap() async {
+    // 맵 Dialog open
+    return await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Column(
+            children: const [
+              Text('한마당 부스 운영 맵', style: TextStyle(fontSize: 24)),
+              SizedBox(
+                child: Image(image: AssetImage('assets/images/ticket.png')),
+              )
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('도장 받으러 가기'),
+            )
+          ],
+        );
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -72,6 +98,7 @@ class _MainButtonState extends State<MainButton> {
         if (widget.id == 'logout') {logout()}
         else if (widget.id == 'get') {_get()}
         else if (widget.id == 'qrcode') {_scan(context)}
+        else if (widget.id == 'map') {openMap()}
       },
       child: Container(
         alignment: Alignment.center,

@@ -138,6 +138,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,  //overflow에러 임시해결
       body: SafeArea(
         child: Container(
           decoration: const BoxDecoration(

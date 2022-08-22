@@ -71,6 +71,7 @@ class _HomeState extends State<Home> {
   bool isLoading = true;
   Future _getData () async {
     // 부스에 관련 데이터 가져오기
+    print('main + getData');
     await db.collection('booth').get()
     .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) { 

@@ -146,7 +146,7 @@ class _LoginState extends State<Login> {
                           child: const Text('Login', style: TextStyle(fontSize: 22),)
                         )
                       ),
-                      SizedBox(
+                      SizedBox( 
                         width: 220,
                         child: ElevatedButton(
                           onPressed: () => Navigator.pop(context), 

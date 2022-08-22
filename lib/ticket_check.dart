@@ -12,15 +12,9 @@ class _PasswordState extends State<Password> {
   final passwordTextEditController = TextEditingController();
 
   @override
-  void dispose() {
-    passwordTextEditController.dispose();
-  }
 
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("ticket password"),
-        ),
         body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
@@ -35,9 +29,9 @@ class _PasswordState extends State<Password> {
                       child: IconButton(
                           icon: Icon(Icons.arrow_back),
                           color: Colors.black,
-                          iconSize: 20.20,
+                          iconSize: 40,
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pop(context, false);
                           }))),
               Align(
                   alignment: Alignment.topCenter,

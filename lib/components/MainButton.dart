@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../qrscan.dart';
+import '../ticket.dart';
 
 class MainButton extends StatefulWidget {
   const MainButton({Key? key, required this.id, required this.label, required this.isClear, required this.setResultQR})
@@ -31,7 +32,10 @@ class _MainButtonState extends State<MainButton> {
 
   _get() async {
     if(widget.isClear) {
-      return const Text('상품 화면으로 이동');
+      Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ticket()),
+    );
     } else {
       return await showDialog(
         context: context,
@@ -72,9 +76,10 @@ class _MainButtonState extends State<MainButton> {
           backgroundColor: Colors.white,
           title: Column(
             children: const [
-              Text('한마당 부스 운영 맵', style: TextStyle(fontSize: 24)),
+              Text('한마당 부스 운영 맵', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               SizedBox(
-                child: Image(image: AssetImage('assets/images/ticket.png')),
+                height: 600,
+                child: Image(image: AssetImage('assets/images/Map.jpg')),
               )
             ],
           ),

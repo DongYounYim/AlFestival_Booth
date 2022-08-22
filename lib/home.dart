@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -50,10 +48,23 @@ class _HomeState extends State<Home> {
     print('결과 : ' + resultQR);
     // db 업데이트
     await db.collection('users').doc(uid)
-    .update({'progress': {
-      resultQR: true
-    }})
-    .then((value) => print('User Update'))
+    .update({'progress.${resultQR}': true})
+    .then((value) async => 
+      db.collection('users').doc(uid).get()
+      .then((DocumentSnapshot ds){
+        var temp = ds.data() as Map;
+        var eachData = temp['progress'] as Map;
+        var Flag = true;
+        for (var i = 1; i < 10; i++) {
+          if (!eachData['booth${i}']) {
+            Flag = false; 
+          }
+        }
+        if (Flag) {
+          db.collection('users').doc(uid).update({'clear': true});
+        }
+      })
+    )
     .catchError((error) => print('Update Failed'));
     _getData();
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
-import 'singUp.dart';
+import 'singup.dart';
 
 class Init extends StatelessWidget {
   const Init({Key? key}) : super(key: key);

@@ -17,7 +17,6 @@ class MainButton extends StatefulWidget {
 
 class _MainButtonState extends State<MainButton> {
   bool _active = false;
-  String? _output = 'Empty QR Scan';
 
   logout() {
     FirebaseAuth.instance.signOut();
@@ -34,7 +33,7 @@ class _MainButtonState extends State<MainButton> {
     if(widget.isClear) {
       Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ticket()),
+      MaterialPageRoute(builder: (context) => const Ticket()),
     );
     } else {
       return await showDialog(
@@ -62,7 +61,7 @@ class _MainButtonState extends State<MainButton> {
   Future _scan(context) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ScanQR()),
+      MaterialPageRoute(builder: (context) => const ScanQR()),
     );
     widget.setResultQR(result);
   }

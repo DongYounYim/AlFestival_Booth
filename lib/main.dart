@@ -4,6 +4,10 @@ import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'Init.dart';
 import 'home.dart';
+import 'login.dart';
+import 'singup.dart';
+import 'ticket.dart';
+import 'ticket_check.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +38,14 @@ class BoothApp extends StatelessWidget {
           }
         },
       ),
+      routes: {
+        '/home':(context) => const Home(),
+        '/init':(context) => const Init(),
+        '/login':(context) => const Login(),
+        '/signUp':(context) => const SignUp(),
+        '/ticket':(context) => const Ticket(),
+        '/check':(context) => const Password()
+      },
     );
   }
 }

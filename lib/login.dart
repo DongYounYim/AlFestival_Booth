@@ -78,10 +78,6 @@ class _LoginState extends State<Login> {
         )
       );
     }
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Home())
-    );
   }
   @override
   Widget build(BuildContext context) {
@@ -142,14 +138,22 @@ class _LoginState extends State<Login> {
                       SizedBox(
                         width: 220,
                         child: ElevatedButton(
-                          onPressed: _login, 
+                          onPressed: () {
+                            _login();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const Home())
+                            );
+                          }, 
                           child: const Text('Login', style: TextStyle(fontSize: 22),)
                         )
                       ),
                       SizedBox( 
                         width: 220,
                         child: ElevatedButton(
-                          onPressed: () => Navigator.pop(context), 
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                           child: const Text('초기화면으로', style: TextStyle(fontSize: 22),)
                         )
                       )

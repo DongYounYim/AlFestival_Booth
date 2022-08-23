@@ -1,22 +1,23 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'ticket_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ticket extends StatefulWidget {
-  const ticket({Key? key}) : super(key: key);
+class Ticket extends StatefulWidget {
+  const Ticket({Key? key}) : super(key: key);
 
   @override
-  State<ticket> createState() => _ticketState();
+  State<Ticket> createState() => _TicketState();
 }
 
-class _ticketState extends State<ticket> {
+class _TicketState extends State<Ticket> {
   final uid = FirebaseAuth.instance.currentUser!.uid;
   final db = FirebaseFirestore.instance;
   bool isLoading = true;
   var isgetItem = false;
   _getItem () async {
-    print('ticket: getData');
+    log('ticket: getData');
     db.collection('users').doc(uid).get()
     .then((DocumentSnapshot doc) {
       var data = doc.data() as Map;
@@ -26,7 +27,7 @@ class _ticketState extends State<ticket> {
       setState(() {
         isLoading = false;
       });
-    }).catchError((e) => print('error' + e));
+    }).catchError((e) {log(e);});
   }
   setGetItem () async {
     await db.collection('users').doc(uid)
@@ -35,14 +36,14 @@ class _ticketState extends State<ticket> {
       setState(() {
         isgetItem = true;
       })
-    }).catchError((e) => print(e));
+    }).catchError((e) {log(e);});
   }
   Future _navigate (context) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Password())
+      MaterialPageRoute(builder: (context) => const Password())
     );
-    print(result);
+    log(result);
     if (result) {
       // update
       setGetItem();
@@ -55,12 +56,12 @@ class _ticketState extends State<ticket> {
   Widget build(BuildContext context) {
     if (isLoading) {
       _getItem();
-      return CircularProgressIndicator();
+      return const CircularProgressIndicator();
     } else {
       return Scaffold(
           body: SafeArea(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   image: DecorationImage(
                 image: AssetImage("assets/images/background2.jpg"),
                 fit: BoxFit.cover,
@@ -84,7 +85,7 @@ class _ticketState extends State<ticket> {
                         style: TextStyle(fontSize: 50, color: Colors.black)),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(bottom: 80),
+                    padding: const EdgeInsets.only(bottom: 80),
                     child: (() {
                       if (isgetItem) {
                         return Image.asset('assets/images/ticket_used.png');

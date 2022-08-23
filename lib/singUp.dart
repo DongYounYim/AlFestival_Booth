@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -120,20 +121,16 @@ class _SignUpState extends State<SignUp> {
         'booth8': false,
         'booth9': false
       }
-    }).then((value) => print('정보 입력 성공'))
-    .catchError((error) => print('Failed to add user: $error'));
+    }).then((value) => log('정보 입력 성공'))
+    .catchError((error) => log('Failed to add user: $error'));
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text, 
         password: _passwordController.text
       );
     } catch (e) {
-      print('로그인 에러발생');
+      log('로그인 에러발생');
     }
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Home())
-    );
   }
   @override
   Widget build(BuildContext context) {
@@ -192,7 +189,7 @@ class _SignUpState extends State<SignUp> {
                       style: const TextStyle(fontSize: 18),
                       items: schoolList.map((String name) {
                         return DropdownMenuItem<String>(
-                          child: Text(name, style: TextStyle(color: Colors.black),),
+                          child: Text(name, style: const TextStyle(color: Colors.black),),
                           value: name,
                         );
                       }).toList(),
@@ -217,7 +214,13 @@ class _SignUpState extends State<SignUp> {
                       SizedBox(
                         width: 220,
                         child: ElevatedButton(
-                          onPressed: () => _signUp(),
+                          onPressed: () {
+                              _signUp();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const Home())
+                            );
+                          },
                           child: const Text('회원가입', style: TextStyle(fontSize: 22),)
                         )
                       ),

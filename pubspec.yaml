@@ -38,6 +38,7 @@ dependencies:
   google_sign_in: ^5.4.0
   cloud_firestore: ^3.4.4
   qr_code_scanner: ^1.0.1
+  restart_app: ^1.1.0
 
 dev_dependencies:
   flutter_test:

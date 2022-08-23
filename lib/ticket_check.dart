@@ -40,7 +40,7 @@ class _PasswordState extends State<Password> {
     return Scaffold(
         body: SafeArea(
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 image: DecorationImage(
               image: AssetImage("assets/images/background2.jpg"),
               fit: BoxFit.cover,
@@ -51,9 +51,9 @@ class _PasswordState extends State<Password> {
                 Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
-                        padding: EdgeInsets.only(bottom: 300),
+                        padding: const EdgeInsets.only(bottom: 300),
                         child: IconButton(
-                            icon: Icon(Icons.arrow_back),
+                            icon: const Icon(Icons.arrow_back),
                             color: Colors.black,
                             iconSize: 40,
                             onPressed: () {
@@ -74,7 +74,7 @@ class _PasswordState extends State<Password> {
                 Align(
                     alignment: Alignment.topCenter,
                     child: IconButton(
-                        icon: Icon(Icons.check),
+                        icon: const Icon(Icons.check),
                         color: Colors.black,
                         iconSize: 40,
                         onPressed: () {

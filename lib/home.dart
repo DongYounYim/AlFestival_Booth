@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'components/MainButton.dart';
+import 'components/main_button.dart';
 
-final BtnItem = [
+final btnItem = [
   [
     'qrcode',
     'QR 인식',
@@ -30,53 +32,54 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  // 로그인 실패에러?  _CastError(Null check operator used on a null value)
   final uid = FirebaseAuth.instance.currentUser!.uid;
   final db = FirebaseFirestore.instance;
   // 부스 정보 데이터
   List initdata = [];
   // 부스 성공 여부
-  var eachClear = Map();
+  var eachClear = {};
   // clear 여부
-  var isClear;
+  var isClear = false;
   // qr코드 인식 결과
-  var resultQR;
+  var resultQR = '';
   void setResultQR(res) async {
     setState(() {
       resultQR = res;
       isLoading = true;
     });
-    print('결과 : ' + resultQR);
+    log(resultQR);
     // db 업데이트
     await db.collection('users').doc(uid)
-    .update({'progress.${resultQR}': true})
+    .update({'progress.$resultQR': true})
     .then((value) async => 
       db.collection('users').doc(uid).get()
       .then((DocumentSnapshot ds){
         var temp = ds.data() as Map;
         var eachData = temp['progress'] as Map;
-        var Flag = true;
+        var flag = true;
         for (var i = 1; i < 10; i++) {
-          if (!eachData['booth${i}']) {
-            Flag = false; 
+          if (!eachData['booth$i']) {
+            flag = false; 
           }
         }
-        if (Flag) {
+        if (flag) {
           db.collection('users').doc(uid).update({'clear': true});
         }
       })
     )
-    .catchError((error) => print('Update Failed'));
+    .catchError((error) {log(error);});
     _getData();
   }
   bool isLoading = true;
   Future _getData () async {
     // 부스에 관련 데이터 가져오기
-    print('main + getData');
+    log('main + getData');
     await db.collection('booth').get()
     .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) { 
+      for (var doc in querySnapshot.docs) {
         initdata.add(doc.data());
-      });
+      }
     });
     // user 데이터 가져오기
     await db.collection('users').doc(uid).get()
@@ -101,11 +104,11 @@ class _HomeState extends State<Home> {
             children: [
               SizedBox(
                 height: 400,
-                child: Image(image: AssetImage('assets/images/${name}.jpg')),
+                child: Image(image: AssetImage('assets/images/$name.jpg')),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(subject, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(detail, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
             ],
           ),
@@ -123,13 +126,13 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     if (isLoading) {
       _getData();
-      return CircularProgressIndicator();
+      return const CircularProgressIndicator();
     } else {
       return SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: false,  //overflow에러 임시해결
           body: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 image: DecorationImage(
               image: AssetImage("assets/images/background1.jpg"),
               fit: BoxFit.cover,
@@ -172,11 +175,11 @@ class _HomeState extends State<Home> {
                           height: 30,
                         ),
                         Container(
-                          margin: EdgeInsets.all(30),
+                          margin: const EdgeInsets.all(30),
                           child: GridView.builder(
                             shrinkWrap: true,
                             itemCount: 4,
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
                               childAspectRatio: 3,
                               mainAxisSpacing: 10,
@@ -185,7 +188,7 @@ class _HomeState extends State<Home> {
                             itemBuilder: (BuildContext context, int index) {
                               // Todo mainbutton에 Clear 여부넘겨주기
                               return MainButton(
-                                  id: BtnItem[index][0], label: BtnItem[index][1], isClear: isClear, setResultQR: setResultQR);
+                                  id: btnItem[index][0], label: btnItem[index][1], isClear: isClear, setResultQR: setResultQR);
                             },
                           ),
                         ),
@@ -208,7 +211,7 @@ class _HomeState extends State<Home> {
                               Container(
                                 height: 150,
                                 width: 200,
-                                color: Color(0xffFEE57E),
+                                color: const Color(0xffFEE57E),
                                 // value['booth_name'] == user의 progress내의 bool값이 true 이면 도장
                                 child: eachClear[value['booth_name']] 
                                   ? const Image(
@@ -221,7 +224,7 @@ class _HomeState extends State<Home> {
                               const SizedBox(height: 10),
                               Container(
                                 width: 200,
-                                color: Color(0xff515151),
+                                color: const Color(0xff515151),
                                 child: Text(
                                   value['title'],
                                   style: const TextStyle(

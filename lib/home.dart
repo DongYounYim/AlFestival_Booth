@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -75,12 +75,14 @@ class _HomeState extends State<Home> {
   Future _getData () async {
     // 부스에 관련 데이터 가져오기
     log('main + getData');
+    var tempArr = [];
     await db.collection('booth').get()
     .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
-        initdata.add(doc.data());
+        tempArr.add(doc.data());
       }
     });
+    initdata = tempArr;
     // user 데이터 가져오기
     await db.collection('users').doc(uid).get()
     .then((DocumentSnapshot doc) {
@@ -103,12 +105,12 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: 400,
+                height: 400.h,
                 child: Image(image: AssetImage('assets/images/$name.jpg')),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
               Text(subject, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
               Text(detail, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
             ],
           ),
@@ -154,15 +156,15 @@ class _HomeState extends State<Home> {
                         const Text('Stamp',
                             style: TextStyle(
                                 fontSize: 80, fontWeight: FontWeight.w700)),
-                        const SizedBox(
-                          height: 30,
+                        SizedBox(
+                          height: 30.h,
                         ),
                         const Text(
                           '남은시간 : 00:00:00',
                           style: TextStyle(fontSize: 30),
                         ),
-                        const SizedBox(
-                          height: 30,
+                        SizedBox(
+                          height: 30.h,
                         ),
                         TextButton(
                           onPressed: () => _getData(),
@@ -171,8 +173,8 @@ class _HomeState extends State<Home> {
                             style: TextStyle(fontSize: 30),
                           ),
                         ),
-                        const SizedBox(
-                          height: 30,
+                        SizedBox(
+                          height: 30.h,
                         ),
                         Container(
                           margin: const EdgeInsets.all(30),
@@ -209,8 +211,8 @@ class _HomeState extends State<Home> {
                           child: Column(
                             children: [
                               Container(
-                                height: 150,
-                                width: 200,
+                                height: 150.h,
+                                width: 200.w,
                                 color: const Color(0xffFEE57E),
                                 // value['booth_name'] == user의 progress내의 bool값이 true 이면 도장
                                 child: eachClear[value['booth_name']] 
@@ -221,9 +223,9 @@ class _HomeState extends State<Home> {
                                     image: AssetImage("assets/images/stamp/${value['stamp']}.png"),
                                   )
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: 10.h),
                               Container(
-                                width: 200,
+                                width: 200.w,
                                 color: const Color(0xff515151),
                                 child: Text(
                                   value['title'],

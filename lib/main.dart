@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:developer';
 import 'Init.dart';
 import 'home.dart';
-import 'login.dart';
-import 'singup.dart';
-import 'ticket.dart';
-import 'ticket_check.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,35 +15,45 @@ void main() async {
   runApp(const BoothApp());
 }
 
-class BoothApp extends StatelessWidget {
+class BoothApp extends StatefulWidget {
   const BoothApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  State<BoothApp> createState() => _BoothAppState();
+}
+
+class _BoothAppState extends State<BoothApp> {
+  bool isLogin = false;
+  void initState() {
+    FirebaseAuth.instance.authStateChanges()
+    .listen((User? user) { 
+      if (user == null) {
+        log('logout');
+        setState(() {
+          isLogin = false;
+        });
+      } else {
+        log('login');
+        setState(() {
+          isLogin = true;
+        });
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'AI_SW_Booth',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, AsyncSnapshot<User?> user) {
-          if (user.hasData) {
-            return const Home();
-          } else {
-            return const Init();
-          }
-        },
-      ),
-      routes: {
-        '/home':(context) => const Home(),
-        '/init':(context) => const Init(),
-        '/login':(context) => const Login(),
-        '/signUp':(context) => const SignUp(),
-        '/ticket':(context) => const Ticket(),
-        '/check':(context) => const Password()
-      },
+    return ScreenUtilInit(
+      designSize: const Size(1080, 810),
+      builder: ((context, child) {
+        return MaterialApp(
+          title: 'AI_SW_Booth',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: isLogin ? const Home() : const Init()
+        );
+      }),
     );
   }
 }
+

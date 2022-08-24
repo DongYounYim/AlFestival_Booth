@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../qrscan.dart';
 import '../ticket.dart';
 
@@ -74,11 +75,11 @@ class _MainButtonState extends State<MainButton> {
         return AlertDialog(
           backgroundColor: Colors.white,
           title: Column(
-            children: const [
-              Text('한마당 부스 운영 맵', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            children: [
+              const Text('한마당 부스 운영 맵', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               SizedBox(
-                height: 600,
-                child: Image(image: AssetImage('assets/images/Map.jpg')),
+                height: 600.h,
+                child: const Image(image: AssetImage('assets/images/Map.jpg')),
               )
             ],
           ),
@@ -117,8 +118,8 @@ class _MainButtonState extends State<MainButton> {
                         blurRadius: 7,
                         offset: const Offset(0, 3))
                   ]),
-        width: 120,
-        height: 60,
+        width: 120.w,
+        height: 60.h,
         child: Text(
           widget.label,
           style: const TextStyle(color: Color(0xffA7CCF8), fontSize: 20),

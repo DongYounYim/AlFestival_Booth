@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'home.dart';
 
 class Login extends StatefulWidget {
@@ -59,7 +60,9 @@ class _LoginState extends State<Login> {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text, 
         password: _passwordController.text
-      );
+      ).then((value) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const Home()));
+      });
     } on FirebaseAuthException catch (e) {
       String message = '';
 
@@ -93,11 +96,11 @@ class _LoginState extends State<Login> {
           child: Form(
             key: _formKey,
             child: Padding(
-              padding: const EdgeInsets.only(right: 300.0, left: 300.0),
+              padding: EdgeInsets.only(right: 300.0.w, left: 300.0.w),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 100),
+                  SizedBox(height: 100.h),
                   const Text(
                     "Welcome to",
                     style: TextStyle(
@@ -127,29 +130,25 @@ class _LoginState extends State<Login> {
                       )
                     ],
                   ),
-                  const SizedBox(height: 70.0),
+                  SizedBox(height: 70.0.h),
                   _emailInputWidget(),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0.h),
                   _passwordInputWidget(),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: 220,
+                        width: 220.w,
                         child: ElevatedButton(
                           onPressed: () {
                             _login();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const Home())
-                            );
                           }, 
                           child: const Text('Login', style: TextStyle(fontSize: 22),)
                         )
                       ),
                       SizedBox( 
-                        width: 220,
+                        width: 220.w,
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'login.dart';
 import 'singup.dart';
 
@@ -17,7 +18,7 @@ class Init extends StatelessWidget {
           ),
           child: Column(
             children: [
-              const SizedBox(height: 220),
+              SizedBox(height: 220.h),
               const Text(
                 "Welcome to",
                 style: TextStyle(
@@ -47,9 +48,9 @@ class Init extends StatelessWidget {
                   )
                 ],
               ),
-              const SizedBox(height: 40.0),
+              SizedBox(height: 40.0.h),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 280),
+                padding: EdgeInsets.symmetric(horizontal: 280.w),
                 child: Column(
                   children: [
                     ElevatedButton(
@@ -62,32 +63,32 @@ class Init extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.green,
-                        minimumSize: const Size.fromHeight(50),
+                        minimumSize: Size.fromHeight(50.h),
                         elevation: 1.0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4.0)
                         )
                       ),
                       child: Row(
-                        children: const <Widget>[
-                          SizedBox(width: 20),
-                          Icon(
+                        children: <Widget>[
+                          SizedBox(width: 20.w),
+                          const Icon(
                             Icons.mail,
                             color: Colors.white,
                           ),
-                          SizedBox(width: 80),
-                          Text(
+                          SizedBox(width: 80.w),
+                          const Text(
                             '이메일로 로그인 하기',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 24
                             ),
                           ),
-                          SizedBox(width: 20)
+                          SizedBox(width: 20.w)
                         ],
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10.h),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -98,28 +99,28 @@ class Init extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.blue,
-                        minimumSize: const Size.fromHeight(50),
+                        minimumSize: Size.fromHeight(50.h),
                         elevation: 1.0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4.0)
                         )
                       ),
                       child: Row(
-                        children: const <Widget>[
-                          SizedBox(width: 20),
-                          Icon(
+                        children: <Widget>[
+                          SizedBox(width: 20.w),
+                          const Icon(
                             Icons.mail,
                             color: Colors.white,
                           ),
-                          SizedBox(width: 80),
-                          Text(
+                          SizedBox(width: 80.w),
+                          const Text(
                             '이메일로 회원가입 및 로그인 하기',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 24
                             ),
                           ),
-                          SizedBox(width: 20)
+                          SizedBox(width: 20.w)
                         ],
                       ),
                     ),

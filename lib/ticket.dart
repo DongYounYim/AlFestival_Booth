@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'ticket_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Ticket extends StatefulWidget {
   const Ticket({Key? key}) : super(key: key);
@@ -69,7 +70,7 @@ class _TicketState extends State<Ticket> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   Align(
                       alignment: Alignment.topLeft,
                       child: IconButton(
@@ -79,13 +80,13 @@ class _TicketState extends State<Ticket> {
                           onPressed: () {
                             return Navigator.pop(context);
                           })),
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 80),
-                    child: Text('상품교환권',
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 80.h),
+                    child: const Text('상품교환권',
                         style: TextStyle(fontSize: 50, color: Colors.black)),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 80),
+                    padding: EdgeInsets.only(bottom: 80.h),
                     child: (() {
                       if (isgetItem) {
                         return Image.asset('assets/images/ticket_used.png');

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 String ticketPassword = '1234';
 
@@ -20,9 +21,9 @@ class _PasswordState extends State<Password> {
           backgroundColor: Colors.white,
           title: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              SizedBox(height: 24),
-              Text('비밀번호가 잘못되었습니다.', style: TextStyle(fontSize: 32))
+            children: [
+              SizedBox(height: 24.h),
+              const Text('비밀번호가 잘못되었습니다.', style: TextStyle(fontSize: 32))
             ],
           ),
           actions: [
@@ -51,7 +52,7 @@ class _PasswordState extends State<Password> {
                 Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
-                        padding: const EdgeInsets.only(bottom: 300),
+                        padding: EdgeInsets.only(bottom: 300.h),
                         child: IconButton(
                             icon: const Icon(Icons.arrow_back),
                             color: Colors.black,
@@ -60,7 +61,7 @@ class _PasswordState extends State<Password> {
                               return Navigator.pop(context, false);
                             }))),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 5, left: 400, right: 400),
+                  padding: EdgeInsets.only(bottom: 5.h, left: 400.w, right: 400.w),
                   child: TextField(
                       controller: passwordTextEditController,
                       keyboardType: TextInputType.visiblePassword,

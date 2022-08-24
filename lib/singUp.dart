@@ -17,9 +17,6 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  // school List
-  List<String> schoolList = ['천안월봉고등학교', '천안청수고등학교', '천안여자고등학교', '천안오성고등학교', '논산대건고등학교'];
-  String selectedSchool = '천안월봉고등학교';
   // uid
   String userid = '';
   // firestore
@@ -107,7 +104,6 @@ class _SignUpState extends State<SignUp> {
       'uid': userid,
       'name': _nameController.text,
       'email': _emailController.text,
-      'school': selectedSchool,
       'clear': false,
       'getItem': false,
       'progress': {
@@ -182,26 +178,6 @@ class _SignUpState extends State<SignUp> {
                     ],
                   ),
                   const SizedBox(height: 70.0),
-                  Container(
-                    width: 200,
-                    child: DropdownButton(
-                      value: selectedSchool,
-                      style: const TextStyle(fontSize: 18),
-                      items: schoolList.map((String name) {
-                        return DropdownMenuItem<String>(
-                          child: Text(name, style: const TextStyle(color: Colors.black),),
-                          value: name,
-                        );
-                      }).toList(),
-                      onChanged: (dynamic value) {
-                        setState(() {
-                          selectedSchool = value;
-                        });
-                      },
-                      isExpanded: true,
-                    ) 
-                  ),
-                  const SizedBox(height: 10.0),
                   _emailInputWidget(),
                   const SizedBox(height: 10.0),
                   _passwordInputWidget(),

@@ -1,24 +1,27 @@
-import 'package:flutter/services.dart';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'home.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class SignUp extends StatefulWidget {
+  const SignUp({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => _LoginState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _LoginState extends State<Login> {
-  bool popLoading = false;
-  // firebase email login
+class _SignUpState extends State<SignUp> {
+  // firebase email signUp
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController(); //입력되는 값을 제어
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  var count = 0;
+  final TextEditingController _nameController = TextEditingController();
+  // uid
+  String userid = '';
+  // firestore
+  CollectionReference user = FirebaseFirestore.instance.collection('users');
   // email inputBox Widget
   Widget _emailInputWidget() {
     return TextFormField(
@@ -54,79 +57,99 @@ class _LoginState extends State<Login> {
       },
     );
   }
-
-  _errorControl() async {
-    return await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-        backgroundColor: Colors.white,
-        title: const Text('알 수 없는 에러 발생',
-          style: TextStyle(color: Colors.red),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => SystemNavigator.pop(),
-            child: const Text('앱종료')
-          )
-        ],
-      );}
+  // name inputBox Widget
+  Widget _nameInputWidget() {
+    return TextFormField(
+      controller: _nameController,
+      keyboardType: TextInputType.text,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'name'
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return '이름을 입력하세요';
+        }
+        return null;
+      },
     );
   }
-
-  // fireabse login 시도
-  _login() async {
+  _signUp() async {
     if(_formKey.currentState!.validate()) {
       FocusScope.of(context).requestFocus(FocusNode());
     }
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential res = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text, 
         password: _passwordController.text
-      ).then((value) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const Home()));
-      });
+      );
+      userid = res.user!.uid;
     } on FirebaseAuthException catch (e) {
       String message = '';
-
-      if (e.code == 'user-not-found') {
-        message = "사용자가 존재하지 않습니다.";
-      } else if (e.code == 'wrong-password') {
-        message = "비밀번호가 잘못 됐습니다.";
+      if (e.code == 'weak-password') {
+        message = '비밀번호 보안이 약합니다.';
+      } else if (e.code == 'email-already-in-use') {
+        message = '사용 중인 이메일 입니다.';
       } else {
-        message = "이메일을 확인하세요.";
+        message = '알 수 없는 오류 발생';
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
-          backgroundColor: Colors.red, 
+          backgroundColor: Colors.red,
         )
       );
+    }
+    user.doc(userid).set({
+      'uid': userid,
+      'name': _nameController.text,
+      'email': _emailController.text,
+      'clear': false,
+      'getItem': false,
+      'progress': {
+        'booth1': false,
+        'booth2': false,
+        'booth3': false,
+        'booth4': false,
+        'booth5': false,
+        'booth6': false,
+        'booth7': false,
+        'booth8': false,
+        'booth9': false
+      }
+    }).then((value) => log('정보 입력 성공'))
+    .catchError((error) => log('Failed to add user: $error'));
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text, 
+        password: _passwordController.text
+      );
+    } catch (e) {
+      log('로그인 에러발생');
     }
   }
   @override
   Widget build(BuildContext context) {
-    log('loginPage');
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
       resizeToAvoidBottomInset: true,
-      body: 
-      SingleChildScrollView(
+      body: SingleChildScrollView(
         child: SafeArea(
         child: Container(
           decoration: const BoxDecoration(
-              image: DecorationImage(
-            image: AssetImage("assets/images/background.jpg"),
-            fit: BoxFit.cover,
-          )),
+            image: DecorationImage(
+              image: AssetImage('assets/images/background.jpg'),
+              fit: BoxFit.cover
+            )
+          ),
           child: Form(
             key: _formKey,
             child: Padding(
-              padding: EdgeInsets.only(right: 300.0.w, left: 300.0.w),
+              padding: EdgeInsets.symmetric(horizontal: 300.0.w),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -165,6 +188,8 @@ class _LoginState extends State<Login> {
                   SizedBox(height: 10.0.h),
                   _passwordInputWidget(),
                   SizedBox(height: 10.0.h),
+                  _nameInputWidget(),
+                  SizedBox(height: 10.0.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -172,33 +197,30 @@ class _LoginState extends State<Login> {
                         width: 220.w,
                         child: ElevatedButton(
                           onPressed: () {
-                            _login();
-                          }, 
-                          child: const Text('Login', style: TextStyle(fontSize: 22),)
+                              _signUp();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const Home())
+                            );
+                          },
+                          child: const Text('회원가입', style: TextStyle(fontSize: 22),)
                         )
                       ),
-                      SizedBox( 
+                      SizedBox(
                         width: 220.w,
                         child: ElevatedButton(
-                          onPressed: () {
-                            count += 1;
-                            Navigator.pop(context);
-                            if (count > 1) {
-                              // something something
-                              _errorControl();
-                            }
-                          },
+                          onPressed: () => Navigator.pop(context),
                           child: const Text('초기화면으로', style: TextStyle(fontSize: 22),)
                         )
                       )
                     ],
                   ),
-                  SizedBox(height: 300.h,)
-                ]
-              ),
+                  SizedBox(height: 220.h)
+                ],
+              )
             )
-          ) 
-        )
+          ),
+        ),
       )
       )
     )

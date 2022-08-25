@@ -1,82 +1,112 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'ticket_check.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-String ticketPassword = '1234';
-
-String InPut_ticketPassword = '';
-
-String checkingpassword = '0';
-
-class ticket extends StatefulWidget {
-  const ticket({Key? key}) : super(key: key);
+class Ticket extends StatefulWidget {
+  const Ticket({Key? key}) : super(key: key);
 
   @override
-  State<ticket> createState() => _ticketState();
+  State<Ticket> createState() => _TicketState();
 }
 
-class _ticketState extends State<ticket> {
+class _TicketState extends State<Ticket> {
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final db = FirebaseFirestore.instance;
+  bool isLoading = true;
+  var isgetItem = false;
+  _getItem () async {
+    log('ticket: getData');
+    db.collection('users').doc(uid).get()
+    .then((DocumentSnapshot doc) {
+      var data = doc.data() as Map;
+      setState(() {
+        isgetItem = data['getItem'];
+      });
+      setState(() {
+        isLoading = false;
+      });
+    }).catchError((e) {log(e);});
+  }
+  setGetItem () async {
+    await db.collection('users').doc(uid)
+    .update({'getItem': true})
+    .then((value) => {
+      setState(() {
+        isgetItem = true;
+      })
+    }).catchError((e) {log(e);});
+  }
+  Future _navigate (context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Password())
+    );
+    log(result);
+    if (result) {
+      // update
+      setGetItem();
+    } else {
+      // 변화 없음.
+    }
+    return ;
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('ticket'),
-        ),
-        body: Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-            image: AssetImage("assets/images/background2.jpg"),
-            fit: BoxFit.cover,
-          )),
-          child: Column(children: <Widget>[
-            Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    color: Colors.black,
-                    iconSize: 20.20,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    })),
-            Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 50),
-                  child: Text('상품교환권',
-                      style: TextStyle(fontSize: 50, color: Colors.black)),
-                )),
-            Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                    padding: EdgeInsets.only(bottom: 50),
+    if (isLoading) {
+      _getItem();
+      return const CircularProgressIndicator();
+    } else {
+      return Scaffold(
+          body: SafeArea(
+            child: Container(
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                image: AssetImage("assets/images/background2.jpg"),
+                fit: BoxFit.cover,
+              )),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(height: 20.h),
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          color: Colors.black,
+                          iconSize: 40,
+                          onPressed: () {
+                            return Navigator.pop(context);
+                          })),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 80.h),
+                    child: const Text('상품교환권',
+                        style: TextStyle(fontSize: 50, color: Colors.black)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 80.h),
                     child: (() {
-                      if (checkingpassword == '1') {
+                      if (isgetItem) {
                         return Image.asset('assets/images/ticket_used.png');
                       } else {
-                        return FlatButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Password()),
-                              );
+                        return InkWell(
+                            onTap: () {
+                              _navigate(context);
                             },
                             child: Image.asset(
                               'assets/images/ticket.png',
                             ));
                       }
-                    })())),
-            Align(
-                alignment: Alignment.topCenter,
-                child: (() {
-                  if (checkingpassword == '1') {
-                    return Text('사용 완료된 교환권입니다.',
-                        style: TextStyle(fontSize: 50, color: Colors.grey));
-                  } else {
-                    return Text('상품 수령 위치 : OOO',
-                        style: TextStyle(fontSize: 50, color: Colors.black));
-                  }
-                })())
-          ]),
-        ));
+                    })()),
+                    isgetItem 
+                    ? const Text('사용 완료된 교환권입니다.', style: TextStyle(fontSize: 50, color: Colors.grey))
+                    : const Text('상품 수령 위치 : OOO', style: TextStyle(fontSize: 50, color: Colors.black))
+              ]),
+            )
+          )
+        );
+    }
   }
 }

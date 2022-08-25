@@ -23,6 +23,7 @@ class BoothApp extends StatefulWidget {
 }
 
 class _BoothAppState extends State<BoothApp> {
+  bool isLoading = true;
   bool isLogin = false;
   void initState() {
     FirebaseAuth.instance.authStateChanges()
@@ -38,10 +39,14 @@ class _BoothAppState extends State<BoothApp> {
           isLogin = true;
         });
       }
+      isLoading = false;
     });
   }
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const CircularProgressIndicator();
+    }
     return ScreenUtilInit(
       designSize: const Size(1080, 810),
       builder: ((context, child) {

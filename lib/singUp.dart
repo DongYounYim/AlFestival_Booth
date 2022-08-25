@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'home.dart';
 
@@ -130,9 +131,14 @@ class _SignUpState extends State<SignUp> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,  //overflow에러 임시해결
-      body: SafeArea(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: SafeArea(
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -143,11 +149,11 @@ class _SignUpState extends State<SignUp> {
           child: Form(
             key: _formKey,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 300.0),
+              padding: EdgeInsets.symmetric(horizontal: 300.0.w),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 100),
+                  SizedBox(height: 100.h),
                   const Text(
                     "Welcome to",
                     style: TextStyle(
@@ -177,18 +183,18 @@ class _SignUpState extends State<SignUp> {
                       )
                     ],
                   ),
-                  const SizedBox(height: 70.0),
+                  SizedBox(height: 70.0.h),
                   _emailInputWidget(),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0.h),
                   _passwordInputWidget(),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0.h),
                   _nameInputWidget(),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: 220,
+                        width: 220.w,
                         child: ElevatedButton(
                           onPressed: () {
                               _signUp();
@@ -201,20 +207,23 @@ class _SignUpState extends State<SignUp> {
                         )
                       ),
                       SizedBox(
-                        width: 220,
+                        width: 220.w,
                         child: ElevatedButton(
                           onPressed: () => Navigator.pop(context),
                           child: const Text('초기화면으로', style: TextStyle(fontSize: 22),)
                         )
                       )
                     ],
-                  )
+                  ),
+                  SizedBox(height: 220.h)
                 ],
               )
             )
           ),
         ),
       )
+      )
+    )
     );
   }
 }

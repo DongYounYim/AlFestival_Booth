@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:developer';
 import 'login.dart';
 import 'singup.dart';
 
@@ -7,6 +8,7 @@ class Init extends StatelessWidget {
   const Init({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    log('initPage');
     return Scaffold(
       body: SafeArea(
         child: Container(

@@ -1,6 +1,8 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:developer';
 import 'home.dart';
 
 class Login extends StatefulWidget {
@@ -11,10 +13,12 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool popLoading = false;
   // firebase email login
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController(); //입력되는 값을 제어
   final TextEditingController _passwordController = TextEditingController();
+  var count = 0;
   // email inputBox Widget
   Widget _emailInputWidget() {
     return TextFormField(
@@ -51,6 +55,25 @@ class _LoginState extends State<Login> {
     );
   }
 
+  _errorControl() async {
+    return await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+        backgroundColor: Colors.white,
+        title: const Text('알 수 없는 에러 발생',
+          style: TextStyle(color: Colors.red),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => SystemNavigator.pop(),
+            child: const Text('앱종료')
+          )
+        ],
+      );}
+    );
+  }
+
   // fireabse login 시도
   _login() async {
     if(_formKey.currentState!.validate()) {
@@ -84,9 +107,16 @@ class _LoginState extends State<Login> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
+    log('loginPage');
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: 
+      SingleChildScrollView(
+        child: SafeArea(
         child: Container(
           decoration: const BoxDecoration(
               image: DecorationImage(
@@ -151,19 +181,27 @@ class _LoginState extends State<Login> {
                         width: 220.w,
                         child: ElevatedButton(
                           onPressed: () {
+                            count += 1;
                             Navigator.pop(context);
+                            if (count > 1) {
+                              // something something
+                              _errorControl();
+                            }
                           },
                           child: const Text('초기화면으로', style: TextStyle(fontSize: 22),)
                         )
                       )
                     ],
-                  )
+                  ),
+                  SizedBox(height: 300.h,)
                 ]
               ),
             )
           ) 
         )
       )
+      )
+    )
     );
   }
 }

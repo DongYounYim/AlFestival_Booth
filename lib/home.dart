@@ -198,12 +198,13 @@ class _HomeState extends State<Home> {
                 ),
                 Expanded(
                   flex: 2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                  child: 
                       GridView.count(
+                        scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         crossAxisCount: 3,
+                        crossAxisSpacing: 50.w,
+                        mainAxisSpacing: 10.h,
                         children: initdata.map((value) => 
                         InkWell(
                           // todo 부스 디테일로 이동 
@@ -241,8 +242,7 @@ class _HomeState extends State<Home> {
                           ),
                         )).toList()  
                       )
-                    ],
-                  ))
+                  )
               ],
             ),
           ),

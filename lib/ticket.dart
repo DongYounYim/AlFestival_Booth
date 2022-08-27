@@ -59,7 +59,12 @@ class _TicketState extends State<Ticket> {
       _getItem();
       return const CircularProgressIndicator();
     } else {
-      return Scaffold(
+      return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
           body: SafeArea(
             child: Container(
               decoration: const BoxDecoration(
@@ -106,7 +111,8 @@ class _TicketState extends State<Ticket> {
               ]),
             )
           )
-        );
+        )
+      );
     }
   }
 }

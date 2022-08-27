@@ -227,16 +227,19 @@ class _HomeState extends State<Home> {
                               SizedBox(height: 10.h),
                               Container(
                                 width: 200.w,
+                                height: 30.h,
                                 color: const Color(0xff515151),
-                                child: Text(
-                                  value['title'],
-                                  style: const TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
+                                child: Center(
+                                  child: Text(
+                                    value['title'],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: value['title'].length > 8 ? 16 : 22,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white,
+                                    ),
+                                  ), 
+                                )
                               )
                             ],
                           ),

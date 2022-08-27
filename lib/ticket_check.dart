@@ -38,7 +38,11 @@ class _PasswordState extends State<Password> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child:Scaffold(
         body: SafeArea(
           child: Container(
             decoration: const BoxDecoration(
@@ -87,6 +91,7 @@ class _PasswordState extends State<Password> {
                     )
               ]))
         )
-      );
+      )
+    );
   }
 }

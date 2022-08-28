@@ -131,22 +131,22 @@ class _LoginState extends State<Login> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(height: 100.h),
-                  const Text(
+                  Text(
                     "Welcome to",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 60,
+                      fontSize: 60.sp,
                       color: Colors.black,
                     ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text(
                         ' AI ',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 60,
+                          fontSize: 60.sp,
                           color: Colors.lightBlue,
                         ),
                       ),
@@ -154,7 +154,7 @@ class _LoginState extends State<Login> {
                         "festival",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 60,
+                          fontSize: 60.sp,
                           color: Colors.black,
                         ),
                       )
@@ -174,7 +174,7 @@ class _LoginState extends State<Login> {
                           onPressed: () {
                             _login();
                           }, 
-                          child: const Text('Login', style: TextStyle(fontSize: 22),)
+                          child: Text('Login', style: TextStyle(fontSize: 22.sp),)
                         )
                       ),
                       SizedBox( 
@@ -188,7 +188,7 @@ class _LoginState extends State<Login> {
                               _errorControl();
                             }
                           },
-                          child: const Text('초기화면으로', style: TextStyle(fontSize: 22),)
+                          child: Text('초기화면으로', style: TextStyle(fontSize: 22.sp),)
                         )
                       )
                     ],

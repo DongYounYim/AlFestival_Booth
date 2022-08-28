@@ -94,8 +94,36 @@ class _HomeState extends State<Home> {
       isLoading = false;
     });
   }
+  openHowto() async {
+    return await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: const Text('부스 체험 도장 받는 법'),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              Text('1. 오른쪽 부스 내역에서 부스 설명을 읽어본다.'),
+              Text('2. 맘에드는 부스를 고르고 한마당 맵을 열어봐서 찾아간다.'),
+              Text('3. 부스 운영장에서 부스를 체험한다.'),
+              Text('4. 체험한 부스 내 운영자에게 qr코드 인식을 통해 체험 인증을 받는다.'),
+              Text('5. 모든 부스를 체험하고 상품 수령 버튼을 통해 상품을 수령한다.')
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('확인'),
+            )
+          ],
+        );
+      }
+    );
+  }
   openDetail(name, subject, detail) async {
-    // 맵 Dialog open
+    // Detail Dialog open
     return await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -103,21 +131,30 @@ class _HomeState extends State<Home> {
           backgroundColor: Colors.white,
           title: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
                 height: 400.h,
                 child: Image(image: AssetImage('assets/images/$name.jpg')),
               ),
               SizedBox(height: 20.h),
-              Text(subject, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
+              Text(subject, style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 20.h),
-              Text(detail, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 60.w),
+                child: Text(detail, style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400)),
+              ),
+            ],
+          ),
+          content: Column(
+            children: [
+              
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('도장 받으러 가기'),
+              child: Text('도장 받으러 가기', style: TextStyle(fontSize: 12.sp),),
             )
           ],
         );
@@ -148,29 +185,29 @@ class _HomeState extends State<Home> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text(
+                        Text(
                           'Booth',
                           style:
-                              TextStyle(fontSize: 80, fontWeight: FontWeight.w700),
+                              TextStyle(fontSize: 80.sp, fontWeight: FontWeight.w700),
                         ),
-                        const Text('Stamp',
+                        Text('Stamp',
                             style: TextStyle(
-                                fontSize: 80, fontWeight: FontWeight.w700)),
+                                fontSize: 80.sp, fontWeight: FontWeight.w700)),
                         SizedBox(
                           height: 30.h,
                         ),
-                        const Text(
+                        Text(
                           '남은시간 : 00:00:00',
-                          style: TextStyle(fontSize: 30),
+                          style: TextStyle(fontSize: 30.sp),
                         ),
                         SizedBox(
                           height: 30.h,
                         ),
                         TextButton(
-                          onPressed: () => _getData(),
-                          child: const Text(
+                          onPressed: () => openHowto(),
+                          child: Text(
                             '[도장 모으는 방법]',
-                            style: TextStyle(fontSize: 30),
+                            style: TextStyle(fontSize: 30.sp),
                           ),
                         ),
                         SizedBox(
@@ -188,7 +225,6 @@ class _HomeState extends State<Home> {
                               crossAxisSpacing: 10,
                             ),
                             itemBuilder: (BuildContext context, int index) {
-                              // Todo mainbutton에 Clear 여부넘겨주기
                               return MainButton(
                                   id: btnItem[index][0], label: btnItem[index][1], isClear: isClear, setResultQR: setResultQR);
                             },
@@ -234,7 +270,7 @@ class _HomeState extends State<Home> {
                                     value['title'],
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      fontSize: value['title'].length > 8 ? 16 : 22,
+                                      fontSize: value['title'].length > 8 ? 16.sp : 22.sp,
                                       fontWeight: FontWeight.w400,
                                       color: Colors.white,
                                     ),

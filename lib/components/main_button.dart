@@ -76,7 +76,7 @@ class _MainButtonState extends State<MainButton> {
           backgroundColor: Colors.white,
           title: Column(
             children: [
-              const Text('한마당 부스 운영 맵', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              Text('한마당 부스 운영 맵', style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold)),
               SizedBox(
                 height: 600.h,
                 child: const Image(image: AssetImage('assets/images/Map.jpg')),
@@ -86,7 +86,7 @@ class _MainButtonState extends State<MainButton> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('도장 받으러 가기'),
+              child: Text('도장 받으러 가기', style: TextStyle(fontSize: 12.sp)),
             )
           ],
         );
@@ -122,7 +122,7 @@ class _MainButtonState extends State<MainButton> {
         height: 60.h,
         child: Text(
           widget.label,
-          style: const TextStyle(color: Color(0xffA7CCF8), fontSize: 20),
+          style: TextStyle(color: Color(0xffA7CCF8), fontSize: 20.sp),
         ),
       ),
     );

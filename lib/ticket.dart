@@ -44,7 +44,6 @@ class _TicketState extends State<Ticket> {
       context,
       MaterialPageRoute(builder: (context) => const Password())
     );
-    log(result);
     if (result) {
       // update
       setGetItem();
@@ -87,27 +86,35 @@ class _TicketState extends State<Ticket> {
                           })),
                   Padding(
                     padding: EdgeInsets.only(bottom: 80.h),
-                    child: const Text('상품교환권',
-                        style: TextStyle(fontSize: 50, color: Colors.black)),
+                    child: Text('상품교환권',
+                        style: TextStyle(fontSize: 50.sp, color: Colors.black)),
                   ),
                   Padding(
                     padding: EdgeInsets.only(bottom: 80.h),
                     child: (() {
                       if (isgetItem) {
-                        return Image.asset('assets/images/ticket_used.png');
+                        return SizedBox(
+                              height: 300.h,
+                              child: const Image(
+                                image: AssetImage('assets/images/ticket_used.png'),
+                        ));
                       } else {
                         return InkWell(
                             onTap: () {
                               _navigate(context);
                             },
-                            child: Image.asset(
-                              'assets/images/ticket.png',
-                            ));
+                            child: SizedBox(
+                              height: 300.h,
+                              child: const Image(
+                                image: AssetImage('assets/images/ticket.png'),
+                              ),
+                            )
+                        );   
                       }
                     })()),
                     isgetItem 
-                    ? const Text('사용 완료된 교환권입니다.', style: TextStyle(fontSize: 50, color: Colors.grey))
-                    : const Text('상품 수령 위치 : OOO', style: TextStyle(fontSize: 50, color: Colors.black))
+                    ? Text('사용 완료된 교환권입니다.', style: TextStyle(fontSize: 50.sp, color: Colors.grey))
+                    : Text('상품 수령 위치 : 상품 뽑기 부스', style: TextStyle(fontSize: 50.sp, color: Colors.black))
               ]),
             )
           )

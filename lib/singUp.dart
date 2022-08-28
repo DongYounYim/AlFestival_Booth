@@ -118,16 +118,20 @@ class _SignUpState extends State<SignUp> {
         'booth8': false,
         'booth9': false
       }
-    }).then((value) => log('정보 입력 성공'))
+    }).then((value) async {
+      log('정보 입력 성공');
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text, 
+          password: _passwordController.text
+        ).then((value) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const Home()));
+        });
+      } catch (e) {
+        log('로그인 에러발생');
+      }
+    })
     .catchError((error) => log('Failed to add user: $error'));
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text, 
-        password: _passwordController.text
-      );
-    } catch (e) {
-      log('로그인 에러발생');
-    }
   }
   @override
   Widget build(BuildContext context) {
@@ -154,22 +158,22 @@ class _SignUpState extends State<SignUp> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(height: 100.h),
-                  const Text(
+                  Text(
                     "Welcome to",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 60,
+                      fontSize: 60.sp,
                       color: Colors.black,
                     ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text(
                         ' AI ',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 60,
+                          fontSize: 60.sp,
                           color: Colors.lightBlue,
                         ),
                       ),
@@ -177,7 +181,7 @@ class _SignUpState extends State<SignUp> {
                         "festival",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 60,
+                          fontSize: 60.sp,
                           color: Colors.black,
                         ),
                       )
@@ -197,20 +201,16 @@ class _SignUpState extends State<SignUp> {
                         width: 220.w,
                         child: ElevatedButton(
                           onPressed: () {
-                              _signUp();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const Home())
-                            );
+                             _signUp();
                           },
-                          child: const Text('회원가입', style: TextStyle(fontSize: 22),)
+                          child: Text('회원가입', style: TextStyle(fontSize: 22.sp),)
                         )
                       ),
                       SizedBox(
                         width: 220.w,
                         child: ElevatedButton(
                           onPressed: () => Navigator.pop(context),
-                          child: const Text('초기화면으로', style: TextStyle(fontSize: 22),)
+                          child: Text('초기화면으로', style: TextStyle(fontSize: 22.sp),)
                         )
                       )
                     ],

@@ -21,22 +21,22 @@ class Init extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 220.h),
-              const Text(
+              Text(
                 "Welcome to",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 60,
+                  fontSize: 60.sp,
                   color: Colors.black,
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Text(
                     ' AI ',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 60,
+                      fontSize: 60.sp,
                       color: Colors.lightBlue,
                     ),
                   ),
@@ -44,7 +44,7 @@ class Init extends StatelessWidget {
                     "festival",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 60,
+                      fontSize: 60.sp,
                       color: Colors.black,
                     ),
                   )
@@ -52,7 +52,7 @@ class Init extends StatelessWidget {
               ),
               SizedBox(height: 40.0.h),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 280.w),
+                padding: EdgeInsets.symmetric(horizontal: 260.w),
                 child: Column(
                   children: [
                     ElevatedButton(
@@ -79,11 +79,11 @@ class Init extends StatelessWidget {
                             color: Colors.white,
                           ),
                           SizedBox(width: 80.w),
-                          const Text(
+                          Text(
                             '이메일로 로그인 하기',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 24
+                              fontSize: 24.sp
                             ),
                           ),
                           SizedBox(width: 20.w)
@@ -115,11 +115,11 @@ class Init extends StatelessWidget {
                             color: Colors.white,
                           ),
                           SizedBox(width: 80.w),
-                          const Text(
+                          Text(
                             '이메일로 회원가입 및 로그인 하기',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 24
+                              fontSize: 24.sp
                             ),
                           ),
                           SizedBox(width: 20.w)

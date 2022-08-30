@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-String ticketPassword = '1234';
+String ticketPassword = 'Aiclear4321!';
 
 class Password extends StatefulWidget {
   const Password({Key? key}) : super(key: key);
@@ -67,7 +67,7 @@ class _PasswordState extends State<Password> {
                                 return Navigator.pop(context, false);
                               }))),
                   Padding(
-                    padding: EdgeInsets.only(bottom: 5.h, left: 400.w, right: 400.w),
+                    padding: EdgeInsets.only(bottom: 5.h, left: 20.w, right: 20.w),
                     child: TextField(
                         controller: passwordTextEditController,
                         keyboardType: TextInputType.visiblePassword,
@@ -91,7 +91,7 @@ class _PasswordState extends State<Password> {
                           }
                         )
                       ),
-                      SizedBox(height: 320.h)
+                      SizedBox(height: 380.h)
                 ]))
           ) 
         )

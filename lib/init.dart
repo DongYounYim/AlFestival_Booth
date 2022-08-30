@@ -10,7 +10,8 @@ class Init extends StatelessWidget {
   Widget build(BuildContext context) {
     log('initPage');
     return Scaffold(
-      body: SafeArea(
+      body: SingleChildScrollView(
+        child: SafeArea(
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -20,7 +21,7 @@ class Init extends StatelessWidget {
           ),
           child: Column(
             children: [
-              SizedBox(height: 220.h),
+              SizedBox(height: 150.h),
               Text(
                 "Welcome to",
                 style: TextStyle(
@@ -50,9 +51,9 @@ class Init extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(height: 40.0.h),
+              SizedBox(height: 100.0.h),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 260.w),
+                padding: EdgeInsets.symmetric(horizontal: 30.w),
                 child: Column(
                   children: [
                     ElevatedButton(
@@ -73,20 +74,19 @@ class Init extends StatelessWidget {
                       ),
                       child: Row(
                         children: <Widget>[
-                          SizedBox(width: 20.w),
+                          SizedBox(width: 10.w),
                           const Icon(
                             Icons.mail,
                             color: Colors.white,
                           ),
-                          SizedBox(width: 80.w),
+                          SizedBox(width: 20.w),
                           Text(
                             '이메일로 로그인 하기',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 24.sp
+                              fontSize: 16.sp
                             ),
                           ),
-                          SizedBox(width: 20.w)
                         ],
                       ),
                     ),
@@ -109,29 +109,30 @@ class Init extends StatelessWidget {
                       ),
                       child: Row(
                         children: <Widget>[
-                          SizedBox(width: 20.w),
+                          SizedBox(width: 10.w),
                           const Icon(
                             Icons.mail,
                             color: Colors.white,
                           ),
-                          SizedBox(width: 80.w),
+                          SizedBox(width: 20.w),
                           Text(
                             '이메일로 회원가입 및 로그인 하기',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 24.sp
+                              fontSize: 16.sp
                             ),
                           ),
-                          SizedBox(width: 20.w)
                         ],
                       ),
                     ),
+                    SizedBox(height: 400.h,)
                   ],
                 ),
               )
             ],
           ),
         ),
+      )
       ),
     );
   }

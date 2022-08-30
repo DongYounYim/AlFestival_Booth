@@ -153,11 +153,11 @@ class _SignUpState extends State<SignUp> {
           child: Form(
             key: _formKey,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 300.0.w),
+              padding: EdgeInsets.symmetric(horizontal: 30.0.w),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(height: 100.h),
+                  SizedBox(height: 150.h),
                   Text(
                     "Welcome to",
                     style: TextStyle(
@@ -187,7 +187,7 @@ class _SignUpState extends State<SignUp> {
                       )
                     ],
                   ),
-                  SizedBox(height: 70.0.h),
+                  SizedBox(height: 100.0.h),
                   _emailInputWidget(),
                   SizedBox(height: 10.0.h),
                   _passwordInputWidget(),
@@ -198,19 +198,19 @@ class _SignUpState extends State<SignUp> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: 220.w,
+                        width: 150.w,
                         child: ElevatedButton(
                           onPressed: () {
                              _signUp();
                           },
-                          child: Text('회원가입', style: TextStyle(fontSize: 22.sp),)
+                          child: Text('회원가입', style: TextStyle(fontSize: 18.sp),)
                         )
                       ),
                       SizedBox(
-                        width: 220.w,
+                        width: 150.w,
                         child: ElevatedButton(
                           onPressed: () => Navigator.pop(context),
-                          child: Text('초기화면으로', style: TextStyle(fontSize: 22.sp),)
+                          child: Text('초기화면으로', style: TextStyle(fontSize: 18.sp),)
                         )
                       )
                     ],

@@ -126,11 +126,11 @@ class _LoginState extends State<Login> {
           child: Form(
             key: _formKey,
             child: Padding(
-              padding: EdgeInsets.only(right: 300.0.w, left: 300.0.w),
+              padding: EdgeInsets.only(right: 30.0.w, left: 30.0.w),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(height: 100.h),
+                  SizedBox(height: 150.h),
                   Text(
                     "Welcome to",
                     style: TextStyle(
@@ -160,7 +160,7 @@ class _LoginState extends State<Login> {
                       )
                     ],
                   ),
-                  SizedBox(height: 70.0.h),
+                  SizedBox(height: 100.0.h),
                   _emailInputWidget(),
                   SizedBox(height: 10.0.h),
                   _passwordInputWidget(),
@@ -169,16 +169,16 @@ class _LoginState extends State<Login> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: 220.w,
+                        width: 150.w,
                         child: ElevatedButton(
                           onPressed: () {
                             _login();
                           }, 
-                          child: Text('Login', style: TextStyle(fontSize: 22.sp),)
+                          child: Text('Login', style: TextStyle(fontSize: 18.sp),)
                         )
                       ),
                       SizedBox( 
-                        width: 220.w,
+                        width: 150.w,
                         child: ElevatedButton(
                           onPressed: () {
                             count += 1;
@@ -188,7 +188,7 @@ class _LoginState extends State<Login> {
                               _errorControl();
                             }
                           },
-                          child: Text('초기화면으로', style: TextStyle(fontSize: 22.sp),)
+                          child: Text('초기화면으로', style: TextStyle(fontSize: 18.sp),)
                         )
                       )
                     ],

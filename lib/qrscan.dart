@@ -73,6 +73,15 @@ class _ScanQRState extends State<ScanQR> {
     return Scaffold(
       body: Column(
         children: <Widget>[
+          Align(
+            alignment: Alignment.topLeft,
+            child: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                color: Colors.black,
+                iconSize: 30,
+                onPressed: () {
+                  return Navigator.pop(context, 'undefined');
+            })),
           Expanded(flex: 4, child: _buildQrView(context)),
           Expanded(
             flex: 1,

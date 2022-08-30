@@ -64,6 +64,9 @@ class _MainButtonState extends State<MainButton> {
       context,
       MaterialPageRoute(builder: (context) => const ScanQR()),
     );
+    if (result == 'undefined') {
+      return ;
+    }
     widget.setResultQR(result);
   }
 
@@ -76,9 +79,9 @@ class _MainButtonState extends State<MainButton> {
           backgroundColor: Colors.white,
           title: Column(
             children: [
-              Text('한마당 부스 운영 맵', style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold)),
+              Text('한마당 부스 운영 맵', style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
               SizedBox(
-                height: 600.h,
+                height: 250.h,
                 child: const Image(image: AssetImage('assets/images/Map.jpg')),
               )
             ],
@@ -108,7 +111,7 @@ class _MainButtonState extends State<MainButton> {
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             color: Colors.white,
             boxShadow: _active
                 ? null
@@ -118,11 +121,11 @@ class _MainButtonState extends State<MainButton> {
                         blurRadius: 7,
                         offset: const Offset(0, 3))
                   ]),
-        width: 120.w,
-        height: 60.h,
+        width: 60.w,
+        height: 80.h,
         child: Text(
           widget.label,
-          style: TextStyle(color: Color(0xffA7CCF8), fontSize: 20.sp),
+          style: TextStyle(color: Color(0xffA7CCF8), fontSize: 16.sp),
         ),
       ),
     );

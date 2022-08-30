@@ -146,11 +146,7 @@ class _HomeState extends State<Home> {
               ),
             ],
           ),
-          content: Column(
-            children: [
-              
-            ],
-          ),
+          content: const SizedBox(height: 0),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),

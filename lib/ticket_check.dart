@@ -43,53 +43,57 @@ class _PasswordState extends State<Password> {
         FocusScope.of(context).unfocus();
       },
       child:Scaffold(
-        body: SafeArea(
-          child: Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-              image: AssetImage("assets/images/background2.jpg"),
-              fit: BoxFit.cover,
-            )),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                        padding: EdgeInsets.only(bottom: 300.h),
-                        child: IconButton(
-                            icon: const Icon(Icons.arrow_back),
-                            color: Colors.black,
-                            iconSize: 40,
-                            onPressed: () {
-                              return Navigator.pop(context, false);
-                            }))),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 5.h, left: 400.w, right: 400.w),
-                  child: TextField(
-                      controller: passwordTextEditController,
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "상품교환 비밀번호 입력",
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
+          child: SafeArea(
+            child: Container(
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                image: AssetImage("assets/images/background2.jpg"),
+                fit: BoxFit.cover,
+              )),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                          padding: EdgeInsets.only(bottom: 300.h),
+                          child: IconButton(
+                              icon: const Icon(Icons.arrow_back),
+                              color: Colors.black,
+                              iconSize: 40,
+                              onPressed: () {
+                                return Navigator.pop(context, false);
+                              }))),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 5.h, left: 400.w, right: 400.w),
+                    child: TextField(
+                        controller: passwordTextEditController,
+                        keyboardType: TextInputType.visiblePassword,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "상품교환 비밀번호 입력",
+                        ),
+                        obscureText: true,
                       ),
-                      obscureText: true,
                     ),
-                  ),
-                Align(
-                    alignment: Alignment.topCenter,
-                    child: IconButton(
-                        icon: const Icon(Icons.check),
-                        color: Colors.black,
-                        iconSize: 40,
-                        onPressed: () {
-                          passwordTextEditController.text == ticketPassword 
-                          ? Navigator.pop(context, true)
-                          : openError();
-                        }
-                      )
-                    )
-              ]))
+                  Align(
+                      alignment: Alignment.topCenter,
+                      child: IconButton(
+                          icon: const Icon(Icons.check),
+                          color: Colors.black,
+                          iconSize: 40,
+                          onPressed: () {
+                            passwordTextEditController.text == ticketPassword 
+                            ? Navigator.pop(context, true)
+                            : openError();
+                          }
+                        )
+                      ),
+                      SizedBox(height: 320.h)
+                ]))
+          ) 
         )
       )
     );

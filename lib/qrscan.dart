@@ -80,7 +80,7 @@ class _ScanQRState extends State<ScanQR> {
                 color: Colors.black,
                 iconSize: 30,
                 onPressed: () {
-                  return Navigator.pop(context, 'undefined');
+                  return Navigator.pop(context, 'back');
             })),
           Expanded(flex: 4, child: _buildQrView(context)),
           Expanded(

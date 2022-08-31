@@ -44,32 +44,34 @@ class _HomeState extends State<Home> {
   // qr코드 인식 결과
   var resultQR = '';
   void setResultQR(res) async {
-    setState(() {
-      resultQR = res;
-      isLoading = true;
-    });
-    log(resultQR);
-    // db 업데이트
-    await db.collection('users').doc(uid)
-    .update({'progress.$resultQR': true})
-    .then((value) async => 
-      db.collection('users').doc(uid).get()
-      .then((DocumentSnapshot ds){
-        var temp = ds.data() as Map;
-        var eachData = temp['progress'] as Map;
-        var flag = true;
-        for (var i = 1; i < 10; i++) {
-          if (!eachData['booth$i']) {
-            flag = false; 
+    if (this.mounted) {
+      setState(() {
+        resultQR = res;
+        isLoading = true;
+      });
+      log(resultQR);
+      // db 업데이트
+      await db.collection('users').doc(uid)
+      .update({'progress.$resultQR': true})
+      .then((value) async => 
+        db.collection('users').doc(uid).get()
+        .then((DocumentSnapshot ds){
+          var temp = ds.data() as Map;
+          var eachData = temp['progress'] as Map;
+          var flag = true;
+          for (var i = 1; i < 10; i++) {
+            if (!eachData['booth$i']) {
+              flag = false; 
+            }
           }
-        }
-        if (flag) {
-          db.collection('users').doc(uid).update({'clear': true});
-        }
-      })
-    )
-    .catchError((error) {log(error);});
-    _getData();
+          if (flag) {
+            db.collection('users').doc(uid).update({'clear': true});
+          }
+        })
+      )
+      .catchError((error) {log(error);});
+      _getData();
+    }
   }
   bool isLoading = true;
   Future _getData () async {

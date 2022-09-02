@@ -48,7 +48,7 @@ class _BoothAppState extends State<BoothApp> {
       return const CircularProgressIndicator();
     }
     return ScreenUtilInit(
-      designSize: const Size(1080, 810),
+      designSize: const Size(390, 844),
       builder: ((context, child) {
         return MaterialApp(
           title: 'AI_SW_Booth',

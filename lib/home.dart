@@ -44,32 +44,34 @@ class _HomeState extends State<Home> {
   // qr코드 인식 결과
   var resultQR = '';
   void setResultQR(res) async {
-    setState(() {
-      resultQR = res;
-      isLoading = true;
-    });
-    log(resultQR);
-    // db 업데이트
-    await db.collection('users').doc(uid)
-    .update({'progress.$resultQR': true})
-    .then((value) async => 
-      db.collection('users').doc(uid).get()
-      .then((DocumentSnapshot ds){
-        var temp = ds.data() as Map;
-        var eachData = temp['progress'] as Map;
-        var flag = true;
-        for (var i = 1; i < 10; i++) {
-          if (!eachData['booth$i']) {
-            flag = false; 
+    if (this.mounted) {
+      setState(() {
+        resultQR = res;
+        isLoading = true;
+      });
+      log(resultQR);
+      // db 업데이트
+      await db.collection('users').doc(uid)
+      .update({'progress.$resultQR': true})
+      .then((value) async => 
+        db.collection('users').doc(uid).get()
+        .then((DocumentSnapshot ds){
+          var temp = ds.data() as Map;
+          var eachData = temp['progress'] as Map;
+          var flag = true;
+          for (var i = 1; i < 10; i++) {
+            if (!eachData['booth$i']) {
+              flag = false; 
+            }
           }
-        }
-        if (flag) {
-          db.collection('users').doc(uid).update({'clear': true});
-        }
-      })
-    )
-    .catchError((error) {log(error);});
-    _getData();
+          if (flag) {
+            db.collection('users').doc(uid).update({'clear': true});
+          }
+        })
+      )
+      .catchError((error) {log(error);});
+      _getData();
+    }
   }
   bool isLoading = true;
   Future _getData () async {
@@ -134,16 +136,13 @@ class _HomeState extends State<Home> {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: 400.h,
+                height: 200.h,
                 child: Image(image: AssetImage('assets/images/$name.jpg')),
               ),
               SizedBox(height: 20.h),
-              Text(subject, style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600)),
+              Text(subject, style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 20.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 60.w),
-                child: Text(detail, style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400)),
-              ),
+              Text(detail, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400)),
             ],
           ),
           content: const SizedBox(height: 0),
@@ -163,80 +162,72 @@ class _HomeState extends State<Home> {
       _getData();
       return const CircularProgressIndicator();
     } else {
-      return SafeArea(
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,  //overflow에러 임시해결
-          body: Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
+      return Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: SafeArea(
+            child: Container(
+              decoration: const BoxDecoration(
+              image: DecorationImage(
               image: AssetImage("assets/images/background1.jpg"),
               fit: BoxFit.cover,
             )),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Booth',
-                          style:
-                              TextStyle(fontSize: 80.sp, fontWeight: FontWeight.w700),
-                        ),
-                        Text('Stamp',
-                            style: TextStyle(
-                                fontSize: 80.sp, fontWeight: FontWeight.w700)),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        Text(
-                          '남은시간 : 00:00:00',
-                          style: TextStyle(fontSize: 30.sp),
-                        ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        TextButton(
-                          onPressed: () => openHowto(),
-                          child: Text(
-                            '[도장 모으는 방법]',
-                            style: TextStyle(fontSize: 30.sp),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20.h,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            'Booth',
+                            style:
+                                TextStyle(fontSize: 28.sp, fontWeight: FontWeight.w700),
                           ),
+                          Text('Stamp',
+                              style: TextStyle(
+                                  fontSize: 28.sp, fontWeight: FontWeight.w700)),  
+                        ],
+                      ),
+                      OutlinedButton(
+                        onPressed: () => openHowto(),
+                        child: Text(
+                          '도장 모으는 방법',
+                          style: TextStyle(fontSize: 18.sp),
                         ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.all(30),
-                          child: GridView.builder(
-                            shrinkWrap: true,
-                            itemCount: 4,
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 3,
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 10,
-                            ),
-                            itemBuilder: (BuildContext context, int index) {
-                              return MainButton(
-                                  id: btnItem[index][0], label: btnItem[index][1], isClear: isClear, setResultQR: setResultQR);
-                            },
-                          ),
-                        ),
-                      ]),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: 
-                      GridView.count(
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10.h),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 1),
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: 4,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 3.8,
+                        mainAxisSpacing: 5,
+                        crossAxisSpacing: 5,
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return MainButton(
+                            id: btnItem[index][0], label: btnItem[index][1], isClear: isClear, setResultQR: setResultQR);
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 20.h,),
+                  Expanded(
+                    child: GridView.count(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 50.w,
-                        mainAxisSpacing: 10.h,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10.w,
+                        mainAxisSpacing: 20.h,
                         children: initdata.map((value) => 
                         InkWell(
                           // todo 부스 디테일로 이동 
@@ -244,8 +235,8 @@ class _HomeState extends State<Home> {
                           child: Column(
                             children: [
                               Container(
-                                height: 150.h,
-                                width: 200.w,
+                                height: 125.h,
+                                width: 160.w,
                                 color: const Color(0xffFEE57E),
                                 // value['booth_name'] == user의 progress내의 bool값이 true 이면 도장
                                 child: eachClear[value['booth_name']] 
@@ -258,15 +249,15 @@ class _HomeState extends State<Home> {
                               ),
                               SizedBox(height: 10.h),
                               Container(
-                                width: 200.w,
-                                height: 30.h,
+                                width: 160.w,
+                                height: 40.h,
                                 color: const Color(0xff515151),
                                 child: Center(
                                   child: Text(
                                     value['title'],
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      fontSize: value['title'].length > 8 ? 16.sp : 22.sp,
+                                      fontSize: value['title'].length > 8 ? 12.sp : 18.sp,
                                       fontWeight: FontWeight.w400,
                                       color: Colors.white,
                                     ),
@@ -275,11 +266,12 @@ class _HomeState extends State<Home> {
                               )
                             ],
                           ),
-                        )).toList()  
-                      )
-                  )
-              ],
-            ),
+                        )).toList()
+                    ) 
+                  ),
+                ],
+              )
+            )
           ),
         )
       );

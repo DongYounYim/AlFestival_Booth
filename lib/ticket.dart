@@ -80,14 +80,14 @@ class _TicketState extends State<Ticket> {
                       child: IconButton(
                           icon: const Icon(Icons.arrow_back),
                           color: Colors.black,
-                          iconSize: 40,
+                          iconSize: 30,
                           onPressed: () {
                             return Navigator.pop(context);
                           })),
                   Padding(
                     padding: EdgeInsets.only(bottom: 80.h),
                     child: Text('상품교환권',
-                        style: TextStyle(fontSize: 50.sp, color: Colors.black)),
+                        style: TextStyle(fontSize: 50.sp, color: Colors.black, fontWeight: FontWeight.w600)),
                   ),
                   Padding(
                     padding: EdgeInsets.only(bottom: 80.h),
@@ -113,8 +113,8 @@ class _TicketState extends State<Ticket> {
                       }
                     })()),
                     isgetItem 
-                    ? Text('사용 완료된 교환권입니다.', style: TextStyle(fontSize: 50.sp, color: Colors.grey))
-                    : Text('상품 수령 위치 : 상품 뽑기 부스', style: TextStyle(fontSize: 50.sp, color: Colors.black))
+                    ? Text('사용 완료된 교환권입니다.', style: TextStyle(fontSize: 22.sp, color: Colors.grey))
+                    : Text('상품 수령 위치 : 상품 뽑기 부스', style: TextStyle(fontSize: 24.sp, color: Colors.black))
               ]),
             )
           )

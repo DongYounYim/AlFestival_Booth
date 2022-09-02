@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:developer';
 import '../qrscan.dart';
 import '../ticket.dart';
 
@@ -59,12 +60,39 @@ class _MainButtonState extends State<MainButton> {
     }
   }
 
-  Future _scan(context) async {
+  _scan(context) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const ScanQR()),
     );
-    widget.setResultQR(result);
+    log(result);
+    if (result == 'back') {
+      return ;
+    }
+    if (result == 'booth1' || result == 'booth2' || result == 'booth3' || result == 'booth4' || result == 'booth5'
+    || result == 'booth6' || result == 'booth7' || result == 'booth8' || result == 'booth9') {
+      widget.setResultQR(result);
+    } else {
+      return await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          // if clear가 true 일 시 상품 수령화면으로 이동 아닐 시 경고 dialog
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            title: const Text(
+              '유효하지 않은 qr 코드 입니다.',
+              style: TextStyle(color: Colors.red),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('확인'),
+              )
+            ],
+          );
+        }
+      );
+    }
   }
 
   openMap() async {
@@ -76,13 +104,16 @@ class _MainButtonState extends State<MainButton> {
           backgroundColor: Colors.white,
           title: Column(
             children: [
-              Text('한마당 부스 운영 맵', style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold)),
+              Text('한마당 부스 운영 맵', style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
               SizedBox(
-                height: 600.h,
-                child: const Image(image: AssetImage('assets/images/Map.jpg')),
+                height: 300.h,
+                child: InteractiveViewer(
+                  child: const Image(image: AssetImage('assets/images/Map.jpg')),
+                )
               )
             ],
           ),
+          content: const Text('사진을 확대할 수 있습니다.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -108,7 +139,7 @@ class _MainButtonState extends State<MainButton> {
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             color: Colors.white,
             boxShadow: _active
                 ? null
@@ -118,11 +149,11 @@ class _MainButtonState extends State<MainButton> {
                         blurRadius: 7,
                         offset: const Offset(0, 3))
                   ]),
-        width: 120.w,
-        height: 60.h,
+        width: 60.w,
+        height: 80.h,
         child: Text(
           widget.label,
-          style: TextStyle(color: Color(0xffA7CCF8), fontSize: 20.sp),
+          style: TextStyle(color: Color(0xffA7CCF8), fontSize: 16.sp),
         ),
       ),
     );

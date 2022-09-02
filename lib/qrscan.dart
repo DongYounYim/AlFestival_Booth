@@ -27,15 +27,18 @@ class _ScanQRState extends State<ScanQR> {
     }
     controller!.resumeCamera();
   }
+
   void _onQRViewCreated(QRViewController controller) {
     setState(() {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-      });
-      //Navigator.pop 하면서 데이터 전달 
+      if (this.mounted) {
+        setState(() {
+          result = scanData;
+        });
+      }
+      //Navigator.pop 하면서 데이터 전달
       Navigator.pop(context, result!.code);
     });
   }
@@ -48,6 +51,7 @@ class _ScanQRState extends State<ScanQR> {
       );
     }
   }
+
   Widget _buildQrView(BuildContext context) {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
@@ -68,20 +72,21 @@ class _ScanQRState extends State<ScanQR> {
       onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: <Widget>[
           Align(
-            alignment: Alignment.topLeft,
-            child: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                color: Colors.black,
-                iconSize: 30,
-                onPressed: () {
-                  return Navigator.pop(context, 'back');
-            })),
+              alignment: Alignment.topLeft,
+              child: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  color: Colors.black,
+                  iconSize: 30,
+                  onPressed: () {
+                    return Navigator.pop(context, 'back');
+                  })),
           Expanded(flex: 4, child: _buildQrView(context)),
           Expanded(
             flex: 1,
